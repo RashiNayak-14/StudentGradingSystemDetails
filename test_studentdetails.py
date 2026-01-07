@@ -1,78 +1,29 @@
-# Import the grade calculation function from main program
-from studentdetails import calculate_grade
+import pytest
+import studentdetails
 
-# ---------------- GRADE S TEST CASES ----------------
 
-# Test lower boundary for Grade S (exactly 90)
-def test_grade_S_lower_boundary():
-    assert calculate_grade(90) == "S"
-
-# Test middle value for Grade S
-def test_grade_S_middle_value():
-    assert calculate_grade(95) == "S"
-
-# Test upper boundary for Grade S (exactly 100)
-def test_grade_S_upper_boundary():
-    assert calculate_grade(100) == "S"
-
-# ---------------- GRADE A TEST CASES ----------------
-
-# Test lower boundary for Grade A (exactly 80)
-def test_grade_A_lower_boundary():
-    assert calculate_grade(80) == "A"
-
-# Test middle value for Grade A
-def test_grade_A_middle_value():
-    assert calculate_grade(85) == "A"
-
-# Test upper boundary just below 90
-def test_grade_A_upper_boundary():
-    assert calculate_grade(89.99) == "A"
-
-# ---------------- GRADE B TEST CASES ----------------
-
-# Test lower boundary for Grade B (exactly 65)
-def test_grade_B_lower_boundary():
-    assert calculate_grade(65) == "B"
-
-# Test middle value for Grade B
-def test_grade_B_middle_value():
-    assert calculate_grade(72) == "B"
-
-# Test upper boundary just below 80
-def test_grade_B_upper_boundary():
-    assert calculate_grade(79.99) == "B"
-
-# ---------------- GRADE C TEST CASES ----------------
-
-# Test lower boundary for Grade C (exactly 50)
-def test_grade_C_lower_boundary():
-    assert calculate_grade(50) == "C"
-
-# Test middle value for Grade C
-def test_grade_C_middle_value():
-    assert calculate_grade(58) == "C"
-
-# Test upper boundary just below 65
-def test_grade_C_upper_boundary():
-    assert calculate_grade(64.99) == "C"
-
-# ---------------- GRADE D TEST CASES ----------------
-
-# Test lower boundary for Grade D (exactly 40)
-def test_grade_D_lower_boundary():
-    assert calculate_grade(40) == "D"
-
-# Test middle value for Grade D
-def test_grade_D_middle_value():
-    assert calculate_grade(45) == "D"
-
-# Test upper boundary just below 50
-def test_grade_D_upper_boundary():
-    assert calculate_grade(49.99) == "D"
-
-# ---------------- GRADE F TEST CASES ----------------
-
-# Test value below 40 should return Grade F
-def test_grade_F_below_40():
-    assert calculate_grade(30) == "F"
+@pytest.mark.parametrize(
+    "marks, expected_grade",
+    [
+        ([90, 95, 100], "S"),   # S grade
+        ([90, 90, 90], "S"),    # S lower boundary
+        ([85, 88, 82], "A"),    # A middle
+        ([80, 80, 80], "A"),    # A boundary
+        ([70, 75, 78], "B"),    # B middle
+        ([65, 65, 65], "B"),    # B boundary
+        ([55, 58, 60], "C"),    # C middle
+        ([50, 50, 50], "C"),    # C boundary
+        ([45, 48, 42], "D"),    # D middle
+        ([40, 40, 40], "D"),    # D boundary
+        ([30, 35, 20], "F"),    # F below 40
+        ([0, 0, 0], "F"),       # Zero marks
+        ([89, 88, 87], "A"),    # Upper A
+        ([79, 78, 77], "B"),    # Upper B
+        ([64, 63, 62], "C"),    # Upper C
+        ([49, 48, 47], "D"),    # Upper D
+    ]
+)
+def test_calculate_grade_parameterized(marks, expected_grade):
+    avg = studentdetails.calculate_average(marks)
+    grade = studentdetails.calculate_grade(avg)
+    assert grade == expected_grade
