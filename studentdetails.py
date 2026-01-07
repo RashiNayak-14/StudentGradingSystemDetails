@@ -1,27 +1,38 @@
 def show_grade_criteria():
-    print("--- Grade Criteria ---")
+    print("\n--- Grade Criteria ---")
     print("90 - 100 : Grade S")
     print("80 - 89  : Grade A")
     print("65 - 79  : Grade B")
     print("50 - 64  : Grade C")
     print("40 - 49  : Grade D")
     print("Below 40 : Grade F")
-    print("----------------------\n")
+    print("----------------------")
+
 
 def show_student_details():
-    print("--- Student Details ---")
-    print("Name: Rashi Nayak")
-    print("Department: BCA")
-    print("Semester: 3\n")
+    print("\n--- Student Details ---")
+    name = input("Enter Name: ")
+    department = input("Enter Department: ")
+    semester = input("Enter Semester: ")
+
+    print("\nStudent Information")
+    print("Name:", name)
+    print("Department:", department)
+    print("Semester:", semester)
+
 
 def show_subject_marks():
-    print("--- Subject Marks ---")
-    print("Subject 1: 85")
-    print("Subject 2: 90")
-    print("Subject 3: 95\n")
+    print("\n--- Enter Subject Marks ---")
+    marks = []
+    for i in range(1, 4):
+        mark = float(input(f"Enter marks for Subject {i}: "))
+        marks.append(mark)
+    return marks
 
-def calculate_average():
-    return (85 + 90 + 95) / 3
+
+def calculate_average(marks):
+    return sum(marks) / len(marks)
+
 
 def calculate_grade(avg):
     if avg >= 90:
@@ -37,14 +48,19 @@ def calculate_grade(avg):
     else:
         return "F"
 
+
 def main():
     show_grade_criteria()
     show_student_details()
-    show_subject_marks()
-    avg = calculate_average()
-    print(f"Average Marks: {avg}")
-    print(f"Final Grade: {calculate_grade(avg)}")
+    marks = show_subject_marks()
+
+    avg = calculate_average(marks)
+    grade = calculate_grade(avg)
+
+    print("\n--- Result ---")
+    print(f"Average Marks: {avg:.2f}")
+    print(f"Final Grade: {grade}")
+
 
 if __name__ == "__main__":
     main()
-
