@@ -1,3 +1,5 @@
+import sys
+
 def show_grade_criteria():
     print("\n--- Grade Criteria ---")
     print("90 - 100 : Grade S")
@@ -62,5 +64,9 @@ def main():
     print(f"Final Grade: {grade}")
 
 
+
 if __name__ == "__main__":
-    main()
+    if sys.stdin.isatty():   # real user typing
+        main()
+    else:
+        print("CI/CD environment detected. User input skipped.")
