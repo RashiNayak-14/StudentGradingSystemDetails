@@ -60,7 +60,7 @@ def main():
     if sys.stdin.isatty():
         name, dept, sem, marks = main_interactive()
     else:
-        name, dept, sem, marks = main_ci()
+        name, dept, sem, marks = main()
 
     avg = calculate_average(marks)
     grade = calculate_grade(avg)
