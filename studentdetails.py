@@ -1,4 +1,5 @@
 import sys
+import os
 
 def show_grade_criteria():
     print("\n--- Grade Criteria ---")
@@ -9,27 +10,6 @@ def show_grade_criteria():
     print("40 - 49  : Grade D")
     print("Below 40 : Grade F")
     print("----------------------")
-
-
-def show_student_details():
-    print("\n--- Student Details ---")
-    name = input("Enter Name: ")
-    department = input("Enter Department: ")
-    semester = input("Enter Semester: ")
-
-    print("\nStudent Information")
-    print("Name:", name)
-    print("Department:", department)
-    print("Semester:", semester)
-
-
-def show_subject_marks():
-    print("\n--- Enter Subject Marks ---")
-    marks = []
-    for i in range(1, 4):
-        mark = float(input(f"Enter marks for Subject {i}: "))
-        marks.append(mark)
-    return marks
 
 
 def calculate_average(marks):
@@ -51,22 +31,49 @@ def calculate_grade(avg):
         return "F"
 
 
+def main_interactive():
+    # LOCAL USER INPUT
+    name = input("Enter Name: ")
+    dept = input("Enter Department: ")
+    sem = input("Enter Semester: ")
+
+    marks = []
+    for i in range(1, 4):
+        marks.append(float(input(f"Enter marks for Subject {i}: ")))
+
+    return name, dept, sem, marks
+
+
+def main_ci():
+    # JENKINS / DOCKER USER INPUT
+    name = os.environ.get("NAME")
+    dept = os.environ.get("DEPT")
+    sem = os.environ.get("SEM")
+    marks = list(map(float, os.environ.get("MARKS").split(",")))
+
+    return name, dept, sem, marks
+
+
 def main():
     show_grade_criteria()
-    show_student_details()
-    marks = show_subject_marks()
+
+    if sys.stdin.isatty():
+        name, dept, sem, marks = main_interactive()
+    else:
+        name, dept, sem, marks = main_ci()
 
     avg = calculate_average(marks)
     grade = calculate_grade(avg)
+
+    print("\n--- Student Details ---")
+    print("Name:", name)
+    print("Department:", dept)
+    print("Semester:", sem)
 
     print("\n--- Result ---")
     print(f"Average Marks: {avg:.2f}")
     print(f"Final Grade: {grade}")
 
 
-
 if __name__ == "__main__":
-    if sys.stdin.isatty():   # real user typing
-        main()
-    else:
-        print("CI/CD environment detected. User input skipped.")
+    main()
